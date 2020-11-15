@@ -1,5 +1,3 @@
-const productModel = require('../../models/product');
-
 const router = require('express').Router();
 const ProductModel = require('../../models/product');
 

@@ -2,7 +2,24 @@ const router = require('express').Router();
 
 const OrderModel = require('../../models/order');
 const ProductModel = require('../../models/product');
-const { route } = require('../product');
+
+router.get('/', async (req, res) => {
+    try {
+        const { status } = req.query;
+        const { _id: customer_id } = req.AUTH;
+
+        const orders = await OrderModel.find({
+            customer_id,
+            ...status && { status }
+        }).exec();
+
+        res.status(200).json({ orders, customer_id });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ errorMessage: error.message });
+    }
+})
 
 router.get('/create', async (req, res) => {
     try {
@@ -48,8 +65,19 @@ router.get('/create', async (req, res) => {
     }
 })
 
-router.patch('/status',async (req, res) => {
+router.patch('/:order_id/status', async (req, res) => {
+    try {
+        const { order_id } = req.params;
+        const { status } = req.query;
 
+        await OrderModel.updateOne({ _id: order_id }, { $set: { status } }).exec();
+
+        res.status(201).json({ order_id, status });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ errorMessage: error.message });
+    }
 })
 
 module.exports = router;
