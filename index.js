@@ -1,3 +1,4 @@
+const bodyParser = require('body-parser');
 const express = require('express');
 const { connect: connectDB } = require('mongoose');
 const PORT = 3000;
@@ -7,6 +8,9 @@ const server = async () => {
     await connectDB(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
     const app = express();
+
+    app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(bodyParser.json());
 
     app.listen(PORT, () => {
         console.log(`server started at ${PORT}`)
