@@ -4,6 +4,9 @@ const { connect: connectDB } = require('mongoose');
 const PORT = 3000;
 const DB_URI = 'mongodb://localhost:27017/demoEcommerce'
 
+require('dotenv').config();
+
+
 const server = async () => {
     await connectDB(DB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 
