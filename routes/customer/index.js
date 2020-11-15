@@ -5,7 +5,7 @@ const { sign } = require('jsonwebtoken');
 const CustomerModel = require('../../models/customer');
 
 
-router.post('/register', (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const { name, email, password } = req.body;
 
@@ -33,7 +33,7 @@ router.post('/register', (req, res) => {
     }
 })
 
-router.post('/login', (req, res) => {
+router.post('/login', async (req, res) => {
     try {
 
         const { email, password } = req.body;

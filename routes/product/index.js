@@ -4,7 +4,7 @@ const router = require('express').Router();
 const ProductModel = require('../../models/product');
 
 
-router.post('/', (req, res) => {
+router.post('/', async (req, res) => {
     try {
         const productData = req.body;
 
@@ -21,7 +21,7 @@ router.post('/', (req, res) => {
     }
 })
 
-router.get('/', (req, res) => {
+router.get('/', async (req, res) => {
     try {
         const { projection } = req.query;
 

@@ -2,8 +2,9 @@ const router = require('express').Router();
 
 const OrderModel = require('../../models/order');
 const ProductModel = require('../../models/product');
+const { route } = require('../product');
 
-router.get('/create', (req, res) => {
+router.get('/create', async (req, res) => {
     try {
         const { product_id, quantity } = req.body;
         const { _id: customer_id } = req.AUTH;
@@ -45,6 +46,10 @@ router.get('/create', (req, res) => {
         console.error(error);
         res.status(500).json({ errorMessage: error.message });
     }
+})
+
+router.patch('/status',async (req, res) => {
+
 })
 
 module.exports = router;
