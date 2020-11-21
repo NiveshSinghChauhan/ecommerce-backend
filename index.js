@@ -4,6 +4,9 @@ const { connect: connectDB } = require('mongoose');
 const PORT = 3000;
 const DB_URI = 'mongodb://localhost:27017/demoEcommerce'
 
+const rootRoute = require('./routes');
+
+
 require('dotenv').config();
 
 
@@ -14,6 +17,8 @@ const server = async () => {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    app.use('/', rootRoute);
 
     app.listen(PORT, () => {
         console.log(`server started at ${PORT}`)
