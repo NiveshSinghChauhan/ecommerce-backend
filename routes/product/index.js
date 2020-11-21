@@ -21,18 +21,18 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
     try {
-        const { projection } = req.query;
+        const { projection = '' } = req.query;
 
         const products = await ProductModel.aggregate([
             {
                 $match: {}
             },
-            {
-                $project: projection.reduce((acc, curr) => Object.assign(acc, { [curr]: 1 }), { _id: 1 })
-            }
+            ...projection && [{
+                $project: projection.split(' ').reduce((acc, curr) => Object.assign(acc, { [curr]: 1 }), { _id: 1 })
+            }]
         ]).exec();
 
-        res.status(200).json({ products: products.data });
+        res.status(200).json({ products: products });
 
     } catch (error) {
         console.error(error);
