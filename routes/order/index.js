@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
+const authorization = require('../../middleware/authorization');
 const OrderModel = require('../../models/order');
 const ProductModel = require('../../models/product');
 
-router.get('/', async (req, res) => {
+router.get('/', authorization, async (req, res) => {
     try {
         const { status } = req.query;
         const { _id: customer_id } = req.AUTH;
@@ -21,7 +22,7 @@ router.get('/', async (req, res) => {
     }
 })
 
-router.get('/create', async (req, res) => {
+router.get('/create', authorization, async (req, res) => {
     try {
         const { product_id, quantity } = req.body;
         const { _id: customer_id } = req.AUTH;
