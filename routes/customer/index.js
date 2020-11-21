@@ -19,7 +19,7 @@ router.post('/register', async (req, res) => {
         const createdCustomer = await new CustomerModel({
             name,
             email,
-            password: hashSync(password)
+            password: hashSync(password, 10)
         }).save();
 
         res.status(201).json({
@@ -38,17 +38,17 @@ router.post('/login', async (req, res) => {
 
         const { email, password } = req.body;
 
-        const customerWithEmail = await CustomerModel.findOne({ email }).exec();
+        const customerWithEmail = await CustomerModel.findOne({ email }).select('password email name _id').exec();
 
         if (!customerWithEmail) {
             res.status(400).json({ errorMessage: 'Customer does\'nt exist' });
             return;
         }
 
-        if (compareSync(password)) {
-            res.send(200).json({
+        if (compareSync(password, customerWithEmail.password)) {
+            res.status(200).json({
                 email,
-                token: sign({ _id: customerWithEmail.__id })
+                token: sign({ _id: customerWithEmail._id }, process.env.SECRET)
             });
         } else {
             res.status(401).json({ errorMessage: 'Email and Password did not match' });
