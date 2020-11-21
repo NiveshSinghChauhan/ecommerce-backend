@@ -32,7 +32,7 @@ router.delete('/', async (req, res) => {
     }
 })
 
-router.post('/create', async (req, res) => {
+router.post('/add', async (req, res) => {
     try {
         const { product_id, quantity } = req.body;
         const { _id: customer_id } = req.AUTH;
@@ -47,7 +47,7 @@ router.post('/create', async (req, res) => {
 
         await CartItemModel.updateOne({ product_id: { $ne: product_id } }, {
             $setOnInsert: newCartItem
-        }).exec();
+        }, { upsert: true }).exec();
 
         res.status(201).json({
             cart_id: newCartItem._id,
@@ -59,7 +59,7 @@ router.post('/create', async (req, res) => {
     }
 })
 
-router.delete('/cart_item_id', async (req, res) => {
+router.delete('/:cart_item_id', async (req, res) => {
     try {
         const { cart_item_id } = req.params;
 
